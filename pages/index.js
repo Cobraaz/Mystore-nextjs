@@ -3,9 +3,12 @@ import baseUrl from "../helpers/baseUrl";
 const Home = ({ products }) => {
   const productList = products.map((product) => {
     return (
-      <div className="card" key={product._id}>
+      <div className="card pcard" key={product._id}>
         <div className="card-image">
-          <img src={product.mediaUrl} />
+          <img
+            src={product.mediaUrl}
+            style={{ width: "100%", height: "10vw", objectFit: "cover" }}
+          />
           <span className="card-title">{product.name}</span>
         </div>
         <div className="card-content">
