@@ -60,7 +60,7 @@ const Create = () => {
         onChange={(e) => setPrice(e.target.value)}
       />
       <div className="file-field input-field">
-        <div className="btn">
+        <div className="btn #1565c0 blue darken-3">
           <span>File</span>
           <input
             type="file"
@@ -83,7 +83,10 @@ const Create = () => {
         onChange={(e) => setDescription(e.target.value)}
         className="materialize-textarea"
       ></textarea>
-      <button className="btn waves-effect waves-light" type="submit">
+      <button
+        className="btn waves-effect waves-light #1565c0 blue darken-3"
+        type="submit"
+      >
         Submit
         <i className="material-icons right">send</i>
       </button>
