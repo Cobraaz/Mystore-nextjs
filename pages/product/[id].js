@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
 import baseUrl from "../../helpers/baseUrl";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
+import cookie2 from "js-cookie";
+
 const Product = ({ product }) => {
+  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const modalRef = useRef(null);
   const cookie = parseCookies();
@@ -15,6 +18,26 @@ const Product = ({ product }) => {
   if (router.isFallback) {
     return <h1>loading...</h1>;
   }
+
+  const AddToCart = async () => {
+    console.log("quantity", quantity);
+    const res = await fetch(`${baseUrl}/api/cart`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: cookie.token,
+      },
+      body: JSON.stringify({ quantity, productId: product._id }),
+    });
+    const res2 = await res.json();
+    if (res2.error) {
+      M.toast({ html: error, classes: "red" });
+      cookie2.remove("user");
+      cookie2.remove("token");
+      router.push("/login");
+    }
+    M.toast({ html: res2.message, classes: "green" });
+  };
 
   const getModal = () => {
     return (
@@ -56,12 +79,28 @@ const Product = ({ product }) => {
         type="number"
         style={{ width: "400px", margin: "10px" }}
         min="1"
+        value={quantity}
+        onChange={(e) => setQuantity(e.target.valueAsNumber)}
         placeholder="Quantity"
       />
-      <button className="btn waves-effect waves-light #1565c0 blue darken-3">
-        Add
-        <i className="material-icons right">add</i>
-      </button>
+      {user ? (
+        <button
+          className="btn waves-effect waves-light #1565c0 blue darken-3"
+          onClick={() => AddToCart()}
+        >
+          Add
+          <i className="material-icons right">add</i>
+        </button>
+      ) : (
+        <button
+          className="btn waves-effect waves-light #1565c0 blue darken-3"
+          onClick={() => router.push("/login")}
+        >
+          Login To Add
+          <i className="material-icons right">add</i>
+        </button>
+      )}
+
       <p className="left-align">{product.description}</p>
       {user.role != "user" && (
         <button
