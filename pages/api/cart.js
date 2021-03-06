@@ -10,6 +10,9 @@ export default async (req, res) => {
     case "PUT":
       await addProduct(req, res);
       break;
+    case "DELETE":
+      await removeProduct(req, res);
+      break;
   }
 };
 
@@ -30,8 +33,20 @@ function Authenticated(icomponent) {
   };
 }
 
+const removeProduct = Authenticated(async (req, res) => {
+  const { productId } = req.body;
+  const cart = await Cart.findOneAndUpdate(
+    { user: req.userId },
+    { $pull: { products: { product: productId } } },
+    { new: true }
+  ).populate("products.product");
+  res.status(200).json(cart.products);
+});
+
 const fetchUserCart = Authenticated(async (req, res) => {
-  const cart = await Cart.findOne({ user: req.userId });
+  const cart = await Cart.findOne({ user: req.userId }).populate(
+    "products.product"
+  );
   res.status(200).json(cart.products);
 });
 
