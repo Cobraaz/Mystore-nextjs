@@ -1,5 +1,6 @@
 import { useState } from "react";
 import baseUrl from "../helpers/baseUrl";
+import { parseCookies } from "nookies";
 const Create = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -23,7 +24,7 @@ const Create = () => {
     if (res2.error) {
       M.toast({ html: res2.error, classes: "red" });
     } else {
-      M.toast({ html: "Product Saved", classes: "red" });
+      M.toast({ html: "Product Saved", classes: "green" });
     }
   };
 
@@ -93,5 +94,18 @@ const Create = () => {
     </form>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const cookie = parseCookies(ctx);
+  const user = cookie.user ? JSON.parse(cookie.user) : "";
+  if (user.role != "admin") {
+    const { res } = ctx;
+    res.writeHead(302, { location: "/" });
+    res.end();
+  }
+  return {
+    props: {},
+  };
+}
 
 export default Create;
