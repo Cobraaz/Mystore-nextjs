@@ -132,8 +132,12 @@ export async function getStaticProps({ params: { id } }) {
 }
 
 export async function getStaticPaths() {
+  const res = await fetch(`${baseUrl}/api/products`);
+  const data = await res.json();
+  const paths = data?.map((d) => ({ params: { id: d._id } }));
+  // console.log(path);
   return {
-    paths: [{ params: { id: "603fea96801c8cb57b8f28e2" } }],
+    paths,
     fallback: true,
   };
 }
