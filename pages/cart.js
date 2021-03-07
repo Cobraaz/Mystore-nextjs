@@ -89,8 +89,8 @@ const Cart = ({ error, products }) => {
     });
     const res2 = await res.json();
     console.log(res2);
-    // M.toast({ html: res2.mesage, classes: "green " });
-    // router.push("/");
+    M.toast({ html: res2.mesage, classes: "green " });
+    router.push("/");
   };
 
   const TotalPrice = () => {

@@ -1,5 +1,8 @@
-import jwt from "jsonwebtoken";
+import Authenticated from "../../helpers/Authenticated";
 import Cart from "../../models/Cart";
+import initDb from "../../helpers/initDB";
+
+initDb();
 
 export default async (req, res) => {
   switch (req.method) {
@@ -15,23 +18,6 @@ export default async (req, res) => {
       break;
   }
 };
-
-function Authenticated(icomponent) {
-  return (req, res) => {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      return res.status(401).json({ error: "you must logged in" });
-    }
-    try {
-      const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
-      req.userId = userId;
-      return icomponent(req, res);
-    } catch (err) {
-      console.log(err);
-      return res.status(401).json({ error: "you must logged in" });
-    }
-  };
-}
 
 const removeProduct = Authenticated(async (req, res) => {
   const { productId } = req.body;
