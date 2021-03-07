@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import { v4 as uuidv4 } from "uuid";
 import Cart from "../../models/Cart";
 import jwt from "jsonwebtoken";
-
+import Order from "../../models/Order";
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
 export default async (req, res) => {
@@ -32,7 +32,7 @@ export default async (req, res) => {
         source: paymentInfo.id,
       });
     }
-    const charge = await stripe.charges.create(
+    await stripe.charges.create(
       {
         currency: "INR",
         amount: price * 100,
@@ -44,6 +44,14 @@ export default async (req, res) => {
         idempotencyKey: uuidv4(),
       }
     );
+
+    await new Order({
+      user: userId,
+      email: paymentInfo.email,
+      total: price,
+      products: cart.products,
+    }).save();
+
     await Cart.findOneAndUpdate({ _id: cart._id }, { $set: { products: [] } });
 
     res.status(200).json({ message: "Payment is Successful" });

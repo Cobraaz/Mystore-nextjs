@@ -57,7 +57,7 @@ const Cart = ({ error, products }) => {
               <div style={{ marginLeft: "20px" }}>
                 <h6>{item.product.name}</h6>
                 <h6>
-                  {item.quantity} x {item.product.price}
+                  {item.quantity} x ₹ {item.product.price}
                 </h6>
                 <button
                   className="btn red"
@@ -100,19 +100,21 @@ const Cart = ({ error, products }) => {
         style={{ display: "flex", justifyContent: "space-between" }}
       >
         <h5>Total ₹ {price}</h5>
-        <StripeCheckout
-          name="My store"
-          amount={price * 100}
-          image={products.length > 0 ? products[0].product.mediaUrl : ""}
-          currency="INR"
-          shippingAddress={true}
-          billingAddress={true}
-          zipCode={true}
-          stripeKey="pk_test_8gDR6VUaYNxScuMtkNgyAHFH00jPUXKdoW"
-          token={(paymentInfo) => handleCheckout(paymentInfo)}
-        >
-          <button className="btn">Checkout</button>
-        </StripeCheckout>
+        {products.length != 0 && (
+          <StripeCheckout
+            name="My store"
+            amount={price * 100}
+            image={products.length > 0 ? products[0].product.mediaUrl : ""}
+            currency="INR"
+            shippingAddress={true}
+            billingAddress={true}
+            zipCode={true}
+            stripeKey="pk_test_8gDR6VUaYNxScuMtkNgyAHFH00jPUXKdoW"
+            token={(paymentInfo) => handleCheckout(paymentInfo)}
+          >
+            <button className="btn">Checkout</button>
+          </StripeCheckout>
+        )}
       </div>
     );
   };

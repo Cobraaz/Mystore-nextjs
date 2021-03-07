@@ -12,7 +12,7 @@ const Home = ({ products }) => {
           <span className="card-title">{product.name}</span>
         </div>
         <div className="card-content">
-          <p>RS {product.price}</p>
+          <p>₹ {product.price}</p>
         </div>
         <div className="card-action">
           <Link

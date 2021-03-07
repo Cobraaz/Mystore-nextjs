@@ -74,7 +74,7 @@ const Product = ({ product }) => {
     <div className="container center-align">
       <h3>{product.name}</h3>
       <img src={product.mediaUrl} style={{ width: "30%" }} />
-      <h5>Rs.{product.price}</h5>
+      <h5>₹ {product.price}</h5>
       <input
         type="number"
         style={{ width: "400px", margin: "10px" }}
