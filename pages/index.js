@@ -30,17 +30,7 @@ const Home = ({ products }) => {
   return <div className="rootcard">{productList}</div>;
 };
 
-// export async function getStaticProps() {
-//   const res = await fetch(`${baseUrl}/api/products`);
-//   const data = await res.json();
-//   return {
-//     props: {
-//       products: data,
-//     },
-//   };
-// }
-
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const res = await fetch(`${baseUrl}/api/products`);
   const data = await res.json();
   return {
@@ -49,4 +39,14 @@ export async function getServerSideProps() {
     },
   };
 }
+
+// export async function getServerSideProps() {
+//   const res = await fetch(`${baseUrl}/api/products`);
+//   const data = await res.json();
+//   return {
+//     props: {
+//       products: data,
+//     },
+//   };
+// }
 export default Home;
