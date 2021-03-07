@@ -20,7 +20,6 @@ const Product = ({ product }) => {
   }
 
   const AddToCart = async () => {
-    console.log("quantity", quantity);
     const res = await fetch(`${baseUrl}/api/cart`, {
       method: "PUT",
       headers: {
@@ -117,25 +116,25 @@ const Product = ({ product }) => {
   );
 };
 
-export async function getStaticProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id } }) {
   const res = await fetch(`${baseUrl}/api/product/${id}`);
   const data = await res.json();
-  return { props: { product: data } };
-}
-
-export async function getStaticPaths() {
   return {
-    paths: [
-      { params: { id: "603fe9e3801c8cb57b8f28e0" } }, // See the "paths" section below
-    ],
-    fallback: true, // See the "fallback" section below
+    props: { product: data },
   };
 }
-
-// export async function getServerSideProps({ params: { id } }) {
-//   const res = await fetch(`http://localhost:3000/api/product/${id}`);
+// export async function getStaticProps({ params: { id } }) {
+//   const res = await fetch(`${baseUrl}/api/product/${id}`);
 //   const data = await res.json();
-//   return { props: { product: data } };
+//   return {
+//     props: { product: data },
+//   };
 // }
 
+// export async function getStaticPaths() {
+//   return {
+//     paths: [{ params: { id: "5f0f502b9cb9363990f3de6c" } }],
+//     fallback: true,
+//   };
+// }
 export default Product;

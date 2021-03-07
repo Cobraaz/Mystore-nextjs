@@ -76,7 +76,7 @@ const Cart = ({ error, products }) => {
   };
 
   const handleCheckout = async (paymentInfo) => {
-    console.log(paymentInfo);
+
     const res = await fetch(`${baseUrl}/api/payment`, {
       method: "POST",
       headers: {
@@ -88,7 +88,7 @@ const Cart = ({ error, products }) => {
       }),
     });
     const res2 = await res.json();
-    console.log(res2);
+  
     M.toast({ html: res2.mesage, classes: "green " });
     router.push("/");
   };
@@ -142,7 +142,7 @@ export async function getServerSideProps(ctx) {
     },
   });
   const products = await res.json();
-  console.log(products);
+
   if (products.error) {
     return {
       props: {

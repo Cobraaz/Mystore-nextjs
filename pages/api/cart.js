@@ -38,7 +38,7 @@ const fetchUserCart = Authenticated(async (req, res) => {
 
 const addProduct = Authenticated(async (req, res) => {
   const { quantity, productId } = req.body;
-  console.log("quantity from server", quantity);
+
 
   const cart = await Cart.findOne({ user: req.userId });
   const pExists = cart.products.some(

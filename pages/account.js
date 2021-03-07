@@ -2,7 +2,7 @@ import { parseCookies } from "nookies";
 import { useEffect, useRef } from "react";
 
 import baseUrl from "../helpers/baseUrl";
-
+import UserRoles from "../components/UserRoles";
 const account = ({ orders }) => {
   const orderCard = useRef(null);
   const cookie = parseCookies();
@@ -60,6 +60,7 @@ const account = ({ orders }) => {
       ) : (
         <OrderHistory />
       )}
+      {user.role === "root" && <UserRoles />}
     </div>
   );
 };
@@ -78,7 +79,7 @@ export async function getServerSideProps(ctx) {
     },
   });
   const res2 = await res.json();
-  console.log(res2);
+
 
   return {
     props: { orders: res2 },
